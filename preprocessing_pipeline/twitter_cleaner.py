@@ -3,7 +3,7 @@ class TwitterCleaner:
     def remove_rt(self, d):
         new_d = []
         for w in d:
-            if len(w) > 0 and w != 'rt':
+            if len(w) > 0 and w.lower() != 'rt':
                 new_d.append(w)
         return new_d
 

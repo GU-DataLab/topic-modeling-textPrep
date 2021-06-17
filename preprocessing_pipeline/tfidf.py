@@ -34,7 +34,7 @@ class TFIDF:
             # if len(clean_document) > 0:
             #     clean_dataset.append(clean_document)
             clean_dataset.append(clean_document)
-        print(self.min_tf_idf, self.max_tf_idf)
+        # print(self.min_tf_idf, self.max_tf_idf)
         return clean_dataset
 
     def clean_max_df(self, D, threshold, total_documents=None, freq=None):

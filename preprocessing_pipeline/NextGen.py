@@ -17,9 +17,11 @@ class NextGen:
         self.pp = pp
 
     def _preprocess_dataset(self, dataset, pp):
-        if not (pp and dataset):
-            raise ValueError('Preprocessor and Dataset cannot be None. PP: {}. Dataset: {}'.format(type(pp),
-                                                                                                   type(dataset)))
+        if not dataset:
+            raise ValueError('Dataset cannot be None.')
+        if not pp:
+            raise ValueError('Preprocessor cannot be None.')
+
         cleaned_dataset = []
         for i in range(0, len(dataset)):
             d = dataset[i]

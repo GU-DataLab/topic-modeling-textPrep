@@ -12,6 +12,8 @@ class TFIDF:
     def tf_idf(self, term):
         tf = self.freq[term][1]
         df = self.freq[term][0]
+        if df == 0:
+            df = 1
         N = self.total_documents
         test_tfidf = tf / math.log(N / df)
         if test_tfidf < self.min_tf_idf:

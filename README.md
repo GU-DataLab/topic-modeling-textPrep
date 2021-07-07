@@ -48,12 +48,10 @@ pipeline.document_methods = [(ru.remove_urls, str(ru),),
                              (cap.lowercase, str(cap),),
                              (rsw.remove_stopwords, str(rsw),)
                              ]
+```
 
-# initialize the pipeline runner
-from preprocessing_pipeline.NextGen import NextGen
-
-runner = NextGen()
-
+You can load your data however you want, so long as it ends up as a list of lists. We provide methods for loading CSV files with and without dates.
+```python
 # load the data
 def load_dataset_with_dates(path):
     dataset = []
@@ -63,9 +61,19 @@ def load_dataset_with_dates(path):
     return dataset
 
 dataset = load_dataset_with_dates('data/sample_tweets.csv')
+# dataset[i] = ['list', 'of', 'words', 'in', 'document_i']
 
-# preprocess the data
-processed_dataset = runner.full_preprocess(dataset, pipeline, ngram_min_freq=10)
+# initialize the pipeline runner
+from preprocessing_pipeline.NextGen import NextGen
+
+runner = NextGen()
+
+# preprocess the data, with some extra ngrams thrown in to ensure they are considered regardless of frequency
+processed_dataset = runner.full_preprocess(dataset, pipeline, ngram_min_freq=10, extra_bigrams=None, extra_ngrams=['donald$trump', 'joe$biden', 'new$york$city'])
+
+# assess data quality quickly and easily
+from evaluation_metrics.dataset_stats import get_data_stats
+print(get_data_stats(processed_dataset))
 ```
 
 You can do some extra filtering after preprocessing, like TF-IDF filtering
@@ -75,4 +83,8 @@ from settings.common import word_tf_df
 freq = {}
 freq = word_tf_df(freq, processed_dataset)
 filtered_dataset = runner.filter_by_tfidf(dataset=processed_dataset, freq=freq, threshold=0.25)
+
+# assess data quality again 
+from evaluation_metrics.dataset_stats import get_data_stats
+print(get_data_stats(filtered_dataset))
 ```

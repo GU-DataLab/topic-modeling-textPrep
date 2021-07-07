@@ -93,3 +93,18 @@ filtered_dataset = runner.filter_by_tfidf(dataset=processed_dataset, freq=freq, 
 from evaluation_metrics.dataset_stats import get_data_stats
 print(get_data_stats(filtered_dataset))
 ```
+
+### Referencing textPrep
+
+```
+Churchill, Rob and Singh, Lisa. 2021. textPrep: A Text Preprocessing Toolkit for Topic Modeling on Social Media Data. DATA 2021.
+```
+
+```bibtex 
+@inproceedings{churchill2021textprep,
+author = {Churchill, Rob and Singh, Lisa},
+title = {textPrep: A Text Preprocessing Toolkit for Topic Modeling on Social Media Data},
+booktitle = {DATA 2021},
+year = {2021},
+}
+```

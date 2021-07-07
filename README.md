@@ -55,10 +55,15 @@ You can load your data however you want, so long as it ends up as a list of list
 # load the data
 def load_dataset_with_dates(path):
     dataset = []
-    with open(path, 'r') as f:
-        for line in f:
-            dataset.append(line.strip().split('\t')[1].split(' '))
-    return dataset
+    try:
+        with open(path, 'r') as f:
+            for line in f:
+                dataset.append(line.strip().split('\t')[1].split(' '))
+        return dataset
+    except FileNotFoundError:
+        print('The path provided for your dataset does not exist: {}'.format(path))
+        import sys
+        sys.exit()
 
 dataset = load_dataset_with_dates('data/sample_tweets.csv')
 # dataset[i] = ['list', 'of', 'words', 'in', 'document_i']

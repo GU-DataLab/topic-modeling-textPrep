@@ -72,76 +72,17 @@ def load_flat_dataset(path):
     return dataset
 
 
-def month(d):
-    return datetime(year=d.year, month=d.month, day=1)
-
-
-def week(d):
-    diff = d.weekday()
-    return d if diff == 6 else d - timedelta(days=diff + 1)
-
-
-def day(d):
-    return d.date()
-
-
-def none(d):
-    return 1
-
-
-def split_by_epoch(documents, epoch_function):
-    days = dict()
-    for d in documents:
-        date = epoch_function(d[0])
-        if date not in days:
-            days[date] = []
-        days[date].append(d[1])
-    return days
-
-
-def load_date_doc_tuples(file, pp=None, fake_date=False, delimiter='\t'):
-    if not pp:
-        pp = get_pp_pipeline()
-    date_document_tuples = []
-    with open(file, 'r') as f:
-        for line in f:
-            day, document = line.strip().split(delimiter)
-            if fake_date:
-                day = None
-            else:
-                day = parse(day).date()
-            cleaned_document = pp.clean_document(document.split(' '))
-            date_document_tuples.append((day, cleaned_document))
-    return date_document_tuples
-
-
-def load_date_doc_tuples_no_date(file, pp=None):
-    if not pp:
-        pp = get_pp_pipeline()
-    date_document_tuples = []
-    with open(file, 'r') as f:
-        for line in f:
-            document = line.strip()
-            day = None
-            cleaned_document = pp.clean_document(document.split(' '))
-            date_document_tuples.append((day, cleaned_document))
-    return date_document_tuples
-
-
-def split_date_docs_by_epoch(date_docs, epoch_function, min_date=None, max_date=None):
-    epoch_document_dictionary = split_by_epoch(date_docs, epoch_function)
-    if min_date or max_date:
-        for tdate in sorted(epoch_document_dictionary.keys()):
-            if min_date and max_date:
-                if not (tdate >= min_date and tdate <= max_date):
-                    del epoch_document_dictionary[tdate]
-            elif min_date:
-                if not (tdate >= min_date):
-                    del epoch_document_dictionary[tdate]
-            elif max_date:
-                if not (tdate <= max_date):
-                    del epoch_document_dictionary[tdate]
-    return epoch_document_dictionary
+def load_dataset_with_dates(path):
+    dataset = []
+    try:
+        with open(path, 'r') as f:
+            for line in f:
+                dataset.append(line.strip().split('\t')[1].split(' '))
+        return dataset
+    except FileNotFoundError:
+        print('The path provided for your dataset does not exist: {}'.format(path))
+        import sys
+        sys.exit()
 
 
 def get_vocabulary(docs):
